@@ -1,0 +1,88 @@
+spring:
+  application:
+    name: spring-security
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  jackson:
+    # 日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      # 格式化输出
+      indent_output: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    deserialization:
+      # 允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.8.24:3306/spring-security
+    username: root
+    password: 123456
+
+mybatis-plus:
+  mapperPackage: com.lzs.**.mapper
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    # 排序方式为首字母
+    tags-sorter: alpha
+    # 使用增强order属性进行排序，或者不设置该参数( @ApiOperationSupport(order = n)直接生效)
+    operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '测试'
+      paths-to-match: '/**'
+      # controller所在包
+      packages-to-scan: com.lzs.springsecurity.controller
+#    - group: '应用组'
+#      paths-to-match: '/**'
+#      packages-to-scan: com.lhz.demo.b
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+#  basic:
+#    enable: true
+#    # Basic认证用户名
+#    username: admin
+#    # Basic认证密码
+#    password: 123456
+
+jwt:
+  header: Authorization
+  prefix: Bearer
+  expiration: 7200 # 秒，1小时
+  renewal: 1800 # 秒，半小时 过期时间少于1800时，token续期
+  secret: fF8AjzSioZxJoS2XtPkP0W3kGlfI9OfCbiDrjZfOQk7BP8k/lFRNnMd6surZM6PAQTwoGwPr5QQ7NdCQWmx9rg==
+
+--- # redis 单机配置(单机与集群只能开启一个另一个需要注释掉)
+spring.data:
+  redis:
+    # 地址
+    host: 192.168.8.24
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码(如没有密码请注释掉)
+    password: htht@1234
+    # 连接超时时间
+    timeout: 10s
+    # 是否开启ssl
+    ssl.enabled: false
+
+# security配置
+security:
+  # 排除路径
+  excludes:
+    # 允许访问
+    - /admin/**
